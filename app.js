@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded' , () => {
 
+    
+
     const bird  = document.querySelector('.bird');
     const gameDisplauy = document.querySelector('.game-container')
     const ground = document.querySelector('.ground-moving')
@@ -10,12 +12,12 @@ document.addEventListener('DOMContentLoaded' , () => {
     let gravity = 3
     let isGameOver = false
     let gap = 430
-
+    let interValGenaration = null
 
 
     function startGame(){
         if(birdBottom<0) birdBottom = 100
-        console.log(birdBottom)
+       
         birdBottom -= gravity
        
         bird.style.bottom = birdBottom + 'px'
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded' , () => {
         const topObstacle = document.createElement('div')
 
 
+        
 
         gameDisplauy.appendChild(obstacle)
         gameDisplauy.appendChild(topObstacle)
@@ -56,6 +59,17 @@ document.addEventListener('DOMContentLoaded' , () => {
             obstacleLeft += -2
             obstacle.style.left = obstacleLeft + 'px'
             topObstacle.style.left = obstacleLeft + 'px'
+            
+            if(valid(topObstacle.getClientRects()[0],bird.getClientRects()[0])){
+                clearInterval(gameTimerId)
+                clearInterval(timerId)
+                clearInterval(interValGenaration)
+                
+            }else if(valid(obstacle.getClientRects()[0],bird.getClientRects()[0])){
+                clearInterval(gameTimerId)
+                clearInterval(timerId)
+                clearInterval(interValGenaration)
+            }
 
             if(obstacleLeft == 60){
                 clearInterval(timerId)
@@ -65,7 +79,7 @@ document.addEventListener('DOMContentLoaded' , () => {
         }
 
        let timerId =  setInterval(moveObs,20)
-       if(!isGameOver) setTimeout(generateObstacle,3000)
+       if(!isGameOver)  interValGenaration =  setTimeout(generateObstacle,3000)
 
     }
 
